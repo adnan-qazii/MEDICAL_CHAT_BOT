@@ -16,7 +16,7 @@ env = load_env()
 print("Environment variables loaded.")
 data_path = "data/"
 print("Data path set.")
-index_name = "medical-chatbot-2"
+index_name = "medical-chatbot"
 print(f"Index name set to {index_name}.")
 documents = load_pdf(data_path)
 print(f"Loaded {len(documents)} documents.")
@@ -50,13 +50,19 @@ HTML = '''
 {% endif %}
 '''
 
+SYSTEM_PROMPT = (
+    "You are a good medical assistant. Your name is Zoya and you will answer questions regarding the given information. "
+    "If a question is out of data, reply with something beautiful like: I don't know, but I'm always here to help!"
+)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     answer = None
     if request.method == 'POST':
         user_input = request.form['question']
+        prompt = f"{SYSTEM_PROMPT}\nUser: {user_input}"
         response = qa_chain({
-            "question": user_input,
+            "question": prompt,
             "chat_history": chat_history
         })
         answer = response['answer']
