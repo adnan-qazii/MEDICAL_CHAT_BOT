@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Medical Chatbot - Zoya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+            padding: 24px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 16px;
+            border: 3px solid #00bcd4;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0097a7;
+        }
+        .chat-box {
+            background: #e0f2f1;
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+        .message {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-end;
+        }
+        .message.user .bubble {
+            background: #b2ebf2;
+            color: #006064;
+            margin-left: auto;
+        }
+        .message.assistant .bubble {
+            background: #0097a7;
+            color: #fff;
+            margin-right: auto;
+        }
+        .bubble {
+            padding: 10px 16px;
+            border-radius: 18px;
+            max-width: 70%;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .form {
+            display: flex;
+            gap: 8px;
+        }
+        .form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #b2ebf2;
+            font-size: 1rem;
+        }
+        .form button {
+            background: #00bcd4;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .form button:hover {
+            background: #0097a7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="/static/image.webp" alt="Zoya" class="avatar">
+            <span class="title">Zoya - Medical Assistant</span>
+        </div>
+        <div class="chat-box" id="chat-box">
+            {% for user, answer in chat_history %}
+                <div class="message user">
+                    <div class="bubble">{{ user }}</div>
+                </div>
+                <div class="message assistant">
+                    <div class="bubble">{{ answer }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <form class="form" method="post">
+            <input type="text" name="question" placeholder="Type your message..." autocomplete="off" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</body>
+</html>
