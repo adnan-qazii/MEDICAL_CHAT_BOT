@@ -1,4 +1,12 @@
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
+import logging
+from typing import Any
 
-def get_embeddings(model_name="all-MiniLM-L6-v2"):
-    return HuggingFaceEmbeddings(model_name=model_name)
+logger = logging.getLogger(__name__)
+
+def get_embeddings(model_name: str = "all-MiniLM-L6-v2") -> Any:
+    try:
+        return HuggingFaceEmbeddings(model_name=model_name)
+    except Exception as e:
+        logger.error(f"Error loading embeddings: {e}")
+        raise

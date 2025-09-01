@@ -51,6 +51,11 @@
             margin-bottom: 12px;
             display: flex;
             align-items: flex-end;
+            opacity: 0;
+            animation: fadeIn 0.7s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
         .message.user .bubble {
             background: #b2ebf2;
@@ -68,6 +73,11 @@
             max-width: 70%;
             font-size: 1rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .timestamp {
+            font-size: 0.8rem;
+            color: #888;
+            margin: 0 8px;
         }
         .form {
             display: flex;
@@ -93,6 +103,20 @@
         .form button:hover {
             background: #0097a7;
         }
+        .reset-btn {
+            background: #ff5252;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .reset-btn:hover {
+            background: #d32f2f;
+        }
     </style>
 </head>
 <body>
@@ -101,13 +125,24 @@
             <img src="/static/image.webp" alt="Zoya" class="avatar">
             <span class="title">Zoya - Medical Assistant</span>
         </div>
+        <form action="/reset" method="get">
+            <button type="submit" class="reset-btn">Reset Chat</button>
+        </form>
         <div class="chat-box" id="chat-box">
-            {% for user, answer in chat_history %}
+            {% for entry in chat_history %}
+                {% if entry|length == 3 %}
+                    {% set user, answer, timestamp = entry %}
+                {% else %}
+                    {% set user, answer = entry %}
+                    {% set timestamp = '' %}
+                {% endif %}
                 <div class="message user">
                     <div class="bubble">{{ user }}</div>
+                    <span class="timestamp">{{ timestamp }}</span>
                 </div>
                 <div class="message assistant">
                     <div class="bubble">{{ answer }}</div>
+                    <span class="timestamp">{{ timestamp }}</span>
                 </div>
             {% endfor %}
         </div>
@@ -116,5 +151,12 @@
             <button type="submit">Send</button>
         </form>
     </div>
+    <script>
+        // Scroll to bottom on new message
+        const chatBox = document.getElementById('chat-box');
+        if (chatBox) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
 </body>
 </html>
