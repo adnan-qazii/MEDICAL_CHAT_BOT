@@ -11,17 +11,29 @@ from langchain_groq import ChatGroq
 app = Flask(__name__)
 
 # Initialize components once
+print("Initializing components...")
 env = load_env()
+print("Environment variables loaded.")
 data_path = "data/"
-index_name = "medical-chatbot"
+print("Data path set.")
+index_name = "medical-chatbot-2"
+print(f"Index name set to {index_name}.")
 documents = load_pdf(data_path)
+print(f"Loaded {len(documents)} documents.")
 texts = split_documents(documents)
+print(f"Split documents into {len(texts)} text chunks.")
 embedding = get_embeddings()
+print(f"Generated embeddings for {len(texts)} text chunks.")
 pc = setup_pinecone(env["PINECONE_API_KEY"], index_name)
+print("Pinecone setup complete.")
 docsearch = create_vector_store(index_name, embedding, texts)
+print("Vector store created.")
 retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k": 5})
+print("Retriever created.")
 model = ChatGroq(model="Gemma2-9b-It", groq_api_key=env["GROQ_API_KEY"])
+print("Language model initialized.")
 qa_chain = get_chain(model, retriever)
+print("QA chain created.")
 chat_history = []
 
 HTML = '''
