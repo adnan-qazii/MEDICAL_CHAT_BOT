@@ -11,7 +11,7 @@ import os
 
 app = Flask(__name__)
 
-# Initialize components once
+# Initialize components once s
 env = load_env()
 index_name = "medical-chatbot"
 pc = setup_pinecone(env["PINECONE_API_KEY"], index_name)
